@@ -21,10 +21,10 @@ app.use("/api/workouts/", workoutRoutes)
 // connect to database
 mongoose.connect(process.env.MONGO_URI,)
   .then(() => {
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(`Connected to DB and listening on port ${port}`);
     })
 
   }).catch((err) => {
-    console.log(err.messagge)
+    console.log(err.message)
   })
