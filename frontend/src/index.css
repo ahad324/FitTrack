@@ -141,13 +141,15 @@ form button:hover {
   color: #ddd;
 }
 
-div.error {
+.error {
   padding: 10px;
   background-color: #ffefef;
   border: 1px solid var(--error);
   color: var(--error);
   border-radius: var(--border-radius);
   margin: 20px 0;
+  width: fit-content;
+  height: fit-content;
 }
 
 @media screen and (max-width:768px) {

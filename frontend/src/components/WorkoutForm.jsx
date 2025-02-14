@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 const WorkoutForm = () => {
-  const { dispatch } = useWorkoutsContext();
+  const { dispatch, API_BASE_URL } = useWorkoutsContext();
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
@@ -12,7 +12,7 @@ const WorkoutForm = () => {
     e.preventDefault();
 
     const workout = { title, load, reps };
-    const response = await fetch("http://localhost:3000/api/workouts", {
+    const response = await fetch(API_BASE_URL, {
       method: "POST",
       body: JSON.stringify(workout),
       headers: { "Content-Type": "application/json" },

@@ -21,7 +21,7 @@ app.use("/api/workouts/", workoutRoutes)
 // connect to database
 mongoose.connect(process.env.MONGO_URI,)
   .then(() => {
-    app.listen(port, "0.0.0.0", () => {
+    app.listen(port, () => {
       console.log(`Connected to DB and listening on port ${port}`);
     })
 

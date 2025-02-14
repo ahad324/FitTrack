@@ -1,6 +1,8 @@
 import { createContext, useReducer } from "react";
 
 export const WorkoutsContext = createContext();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const workoutsReducer = (state, action) => {
   switch (action.type) {
     case "SET_WORKOUTS":
@@ -22,7 +24,7 @@ export const workoutsReducer = (state, action) => {
 export const WorkoutsContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(workoutsReducer, { workouts: null });
   return (
-    <WorkoutsContext.Provider value={{ ...state, dispatch }}>
+    <WorkoutsContext.Provider value={{ ...state, dispatch, API_BASE_URL }}>
       {children}
     </WorkoutsContext.Provider>
   );
