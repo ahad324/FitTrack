@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const WorkoutForm = () => {
   const { dispatch, API_BASE_URL } = useWorkoutsContext();
@@ -7,15 +8,26 @@ const WorkoutForm = () => {
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
   const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const { user } = useAuthContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+
+    if (!user) {
+      setError("You need to be logged in to add a new workout.");
+      return;
+    }
 
     const workout = { title, load, reps };
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(`${API_BASE_URL}/api/workouts`, {
       method: "POST",
       body: JSON.stringify(workout),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
     });
     const json = await response.json();
 
@@ -31,6 +43,7 @@ const WorkoutForm = () => {
       console.log("new workout added", json);
       dispatch({ type: "CREATE_WORKOUT", payload: json });
     }
+    setSubmitting(false);
   };
 
   return (
@@ -60,7 +73,7 @@ const WorkoutForm = () => {
         value={reps}
         required
       />
-      <button>Add Workout</button>
+      <button disabled={submitting}>Add Workout</button>
       {error && <div className="error">{error}</div>}
     </form>
   );

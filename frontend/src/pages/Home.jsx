@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 import Loader from "../components/Loader";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 // components
 import WorkoutDetails from "../components/WorkoutDetails";
@@ -10,11 +11,16 @@ const Home = () => {
   const { workouts, dispatch, API_BASE_URL } = useWorkoutsContext();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useAuthContext();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}`);
+        const response = await fetch(`${API_BASE_URL}/api/workouts`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Failed to fetch workouts. Server might be down.");
@@ -29,8 +35,10 @@ const Home = () => {
       }
     };
 
-    fetchWorkouts();
-  }, [dispatch, API_BASE_URL]);
+    if (user) {
+      fetchWorkouts();
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="home">

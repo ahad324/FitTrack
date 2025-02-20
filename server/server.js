@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 const workoutRoutes = require("./routes/workouts")
+const userRoutes = require("./routes/user")
 
 app.use(cors());
 app.use(express.json())
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
 
 // routes
 app.use("/api/workouts/", workoutRoutes)
+app.use("/api/user/", userRoutes)
 
 
 // connect to database
